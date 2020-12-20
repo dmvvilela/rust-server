@@ -1,4 +1,4 @@
-use crate::contacts::Contact;
+use crate::contacts::{Contact, NewContact};
 use crate::error_handler::CustomError;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use serde_json::json;
@@ -16,7 +16,7 @@ async fn find(id: web::Path<i32>) -> Result<HttpResponse, CustomError> {
 }
 
 #[post("/contacts")]
-async fn create(contact: web::Json<Contact>) -> Result<HttpResponse, CustomError> {
+async fn create(contact: web::Json<NewContact>) -> Result<HttpResponse, CustomError> {
     let contact = Contact::create(contact.into_inner())?;
     Ok(HttpResponse::Ok().json(contact))
 }

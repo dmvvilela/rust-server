@@ -34,7 +34,7 @@ impl Contact {
         let contact = contacts::table.filter(contacts::id.eq(id)).first(&conn)?;
         Ok(contact)
     }
-    pub fn create(contact: Contact) -> Result<Self, CustomError> {
+    pub fn create(contact: NewContact) -> Result<Self, CustomError> {
         let conn = db::connection()?;
         let contact = Contact::from(contact);
         let contact = diesel::insert_into(contacts::table)
@@ -58,7 +58,7 @@ impl Contact {
 }
 
 impl Contact {
-    fn from(contact: Contact) -> NewContact {
+    fn from(contact: NewContact) -> NewContact {
         NewContact {
             name: contact.name,
             email: contact.email,

@@ -6,7 +6,7 @@ extern crate diesel_migrations;
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
 use listenfd::ListenFd;
-// use std::env;
+use std::env;
 
 mod contacts;
 mod db;
@@ -24,9 +24,10 @@ async fn main() -> std::io::Result<()> {
     server = match listenfd.take_tcp_listener(0)? {
         Some(listener) => server.listen(listener)?,
         None => {
-            // let host = env::var("HOST").expect("Please set host in .env");
-            // let port = env::var("PORT").expect("Please set port in .env");
-            server.bind(format!("{}:{}", "127.0.0.1", "5000"))?
+            let host = env::var("HOST").expect("Please set host in .env");
+            let port = env::var("PORT").expect("Please set port in .env");
+            println!("Server listening on {}:{}", host, port);
+            server.bind(format!("{}:{}", host, port))?
         }
     };
 
